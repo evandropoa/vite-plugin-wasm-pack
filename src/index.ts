@@ -30,8 +30,10 @@ function vitePluginWasmPack(
 ): PluginOption {
   const prefix = '@vite-plugin-wasm-pack@';
   const pkg = 'pkg'; // default folder of wasm-pack module
-  let config_base: string;
-  let config_assetsDir: string;
+  let isDev = false;
+  let config_base;
+  let config_root;
+   let config_assetsDir;
   const cratePaths: string[] = isString(crates) ? [crates] : crates;
   const modulePaths: string[] = !moduleCrates
     ? []
@@ -86,9 +88,20 @@ function vitePluginWasmPack(
           id,
           id.replace(/\-/g, '_') + '.js'
         );
-        const code = await fs.promises.readFile(modulejs, {
+        let code = await fs.promises.readFile(modulejs, {
           encoding: 'utf-8'
         });
+        
+        if(isDev) {
+            // const modulewasm = path_1.default.join('./node_modules', id, id.replace(/\-/g, '_') + '_bg.wasm');
+            // const modulewasm = path_1.default.join('./src/game-engine/pkg', id.replace(/\-/g, '_') + '_bg.wasm');
+            const modulewasm = path.default.join('@fs',config_root, id, pkg, id.replace(/\-/g, '_') + '_bg.wasm');
+            const regex = /input = \".*\";/g;
+            code = code.replace(regex, (_match, group1) => {
+                return `input = "${modulewasm}";`;
+            });
+        }
+        
         return code;
       }
     },
@@ -144,7 +157,7 @@ function vitePluginWasmPack(
             config_base,
             config_assetsDir,
             group1
-          )}"`;
+          )}";`;
         });
         fs.writeFileSync(jsPath, code);
       };
