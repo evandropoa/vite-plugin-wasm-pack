@@ -26,10 +26,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nshen/vite-plugin-wasm-pack"
+    "url": "git+https://github.com/evandropoa/vite-plugin-wasm-pack.git"
   },
   "bugs": {
-    "url": "https://github.com/nshen/vite-plugin-wasm-pack/issues"
+    "url": "https://github.com/evandropoa/vite-plugin-wasm-pack.git/issues"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.9",
